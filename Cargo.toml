@@ -20,6 +20,7 @@ managed = ["async-trait"]
 unmanaged = []
 rt_tokio_1 = ["deadpool-runtime/tokio_1"]
 rt_async-std_1 = ["deadpool-runtime/async-std_1"]
+tc-redis-traits = ["redis", "redis/aio", "redis/tokio-comp"]
 
 [dependencies]
 num_cpus = "1.11.1"
@@ -34,6 +35,7 @@ deadpool-runtime = { version = "0.1", path = "./runtime" }
 # `tokio::sync::Semaphore`. No other features of `tokio` are enabled or used
 # unless the `rt_tokio_1` feature is enabled.
 tokio = { version = "1.0", features = ["sync"] }
+redis = { version = "0.21.5", optional = true }
 
 [dev-dependencies]
 async-std = { version = "1.0", features = ["attributes"] }

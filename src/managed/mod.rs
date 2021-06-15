@@ -257,6 +257,33 @@ impl<M: Manager> AsMut<M::Type> for Object<M> {
     }
 }
 
+#[cfg(feature = "tc-redis-traits")]
+impl<M> redis::aio::ConnectionLike for Object<M>
+where
+    M: Manager,
+    M::Type: redis::aio::ConnectionLike,
+{
+    fn req_packed_command<'a>(
+        &'a mut self,
+        cmd: &'a redis::Cmd,
+    ) -> redis::RedisFuture<'a, redis::Value> {
+        (**self).req_packed_command(cmd)
+    }
+
+    fn req_packed_commands<'a>(
+        &'a mut self,
+        cmd: &'a redis::Pipeline,
+        offset: usize,
+        count: usize,
+    ) -> redis::RedisFuture<'a, Vec<redis::Value>> {
+        (**self).req_packed_commands(cmd, offset, count)
+    }
+
+    fn get_db(&self) -> i64 {
+        (**self).get_db()
+    }
+}
+
 /// Generic object and connection pool.
 ///
 /// This struct can be cloned and transferred across thread boundaries and uses
